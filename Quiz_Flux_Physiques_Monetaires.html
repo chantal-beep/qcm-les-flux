@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Flux physique ou monétaire</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f8f8;
+      max-width: 900px;
+    }
+    h1 {
+      color: #2b4d75;
+    }
+    .instruction {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    .items, .zone {
+      border: 2px dashed #ccc;
+      padding: 15px;
+      background: white;
+      width: 45%;
+      min-height: 300px;
+    }
+    .draggable {
+      margin: 8px 0;
+      padding: 8px;
+      background: #e0ecf8;
+      border: 1px solid #4d90fe;
+      cursor: move;
+    }
+    .correct {
+      background-color: #c9f7c9;
+    }
+    .incorrect {
+      background-color: #f7c9c9;
+    }
+    .zone h3 {
+      margin-top: 0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-weight: bold;
+      background-color: #2b4d75;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Flux physique ou monétaire</h1>
+<p class="instruction">Glissez les propositions dans les zones correspondantes. Cliquez sur "Vérifier" pour voir votre score. Vous pouvez recommencer jusqu’à obtenir toutes les bonnes réponses.</p>
+
+<div class="container">
+  <div class="items" id="items">
+    <div class="draggable" draggable="true" data-type="physique">Le temps de travail effectué par le comptable de l'entreprise</div>
+    <div class="draggable" draggable="true" data-type="physique">L'achat d'un ordinateur</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Les fonds versés par les actionnaires au capital de l'entreprise lors de la création de celle-ci</div>
+    <div class="draggable" draggable="true" data-type="physique">La facture reçue d'un fournisseur (pour l'achat de matières premières)</div>
+    <div class="draggable" draggable="true" data-type="physique">La facture trimestrielle du cabinet d'expertise comptable relative à la tenue des comptes</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le prélèvement bancaire correspondant à la mensualité de remboursement de l'emprunt bancaire</div>
+    <div class="draggable" draggable="true" data-type="physique">Les services d'un intérimaire</div>
+    <div class="draggable" draggable="true" data-type="monetaire">L'encaissement d'un chèque reçu d'un client</div>
+    <div class="draggable" draggable="true" data-type="physique">La facture de vente suite à la livraison de marchandises</div>
+    <div class="draggable" draggable="true" data-type="physique">L'achat de fournitures administratives</div>
+    <div class="draggable" draggable="true" data-type="physique">L'achat de timbre en espèces</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le versement des dividendes aux actionnaires</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le décaissement de 2 500 euros pour les cotisations sociales</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le télérèglement de la TVA à l'État</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le paiement des frais bancaires</div>
+    <div class="draggable" draggable="true" data-type="physique">Le service d'un transporteur</div>
+    <div class="draggable" draggable="true" data-type="physique">Le retour de produits finis défectueux</div>
+    <div class="draggable" draggable="true" data-type="monetaire">La pièce de caisse relative à l'achat de timbre</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Le chèque bancaire pour régler une dette d’électricité</div>
+    <div class="draggable" draggable="true" data-type="monetaire">Les dividendes perçus lors d'un placement en bourse</div>
+  </div>
+
+  <div class="zone" id="physique" ondragover="event.preventDefault()" ondrop="drop(event, 'physique')">
+    <h3>Flux physique</h3>
+  </div>
+
+  <div class="zone" id="monetaire" ondragover="event.preventDefault()" ondrop="drop(event, 'monetaire')">
+    <h3>Flux monétaire</h3>
+  </div>
+</div>
+
+<button onclick="verifier()">Vérifier</button>
+
+<script>
+  let draggedItem = null;
+
+  document.querySelectorAll('.draggable').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      draggedItem = e.target;
+    });
+  });
+
+  function drop(e, type) {
+    e.preventDefault();
+    if (draggedItem) {
+      e.target.closest('.zone').appendChild(draggedItem);
+      draggedItem = null;
+    }
+  }
+
+  function verifier() {
+    document.querySelectorAll('.draggable').forEach(item => {
+      const expected = item.dataset.type;
+      const parentId = item.parentElement.id;
+      const isCorrect = (expected === parentId);
+      item.classList.remove("correct", "incorrect");
+      item.classList.add(isCorrect ? "correct" : "incorrect");
+    });
+  }
+</script>
+
+</body>
+</html>
